@@ -1,35 +1,47 @@
-import React from 'react'
+import { NavLink } from "react-router-dom";
 import Logo from '../assets/logo.png'
-import { NavLink } from 'react-router-dom'
-
+import { useContext } from "react";
+import { MyContext } from "../context/MyContext";
 const NavBar = () => {
+
+  const activeClass = ({ isActive }) => (isActive ? "active" : "")
+  const { countProducts} = useContext(MyContext);
+  const { allProducts } = useContext(MyContext);
+
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg bg-warning">
-  <div className="container">
-    <a className="navbar-brand" to="/">
-      <img src={Logo} alt="mamma-mia" />
-    </a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarNav">
-      <ul className="navbar-nav ms-auto">
-        <li className="nav-item">
-          <NavLink className="nav-link" aria-current="page" to="/">Menu</NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink className="nav-link" to="carrito">Cart</NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink className="nav-link" to="/:id">Details</NavLink>
-        </li>
-       
-      </ul>
+    <div className="navbar-container">
+      <navbar>
+        <div className="navbar-l">
+          <NavLink to="/">
+            <img src={Logo} alt="logo" className='logo' />
+          </NavLink>
+        </div>
+
+    <div className='navbar-c'>
+      <NavLink className={activeClass} to="/">
+        <i className="fa-solid fa-bell-concierge"></i>MENÚ
+      </NavLink>
+      <a>
+        <i className="fa-solid fa-pizza-slice"></i>PROMOS
+      </a>
+      <a>
+        <i className="fa-solid fa-shop"></i>LOCALES
+      </a>
+      <a>
+        <i className="fa-solid fa-note-sticky"></i>MIS PEDIDOS
+      </a>
+      <a>
+        <i className="fa-solid fa-user"></i>INGRESAR
+      </a>
     </div>
-  </div>
-</nav>
-    </div>
+    <NavLink className={activeClass} to="/cart">
+      <div className="navbar-r">
+        <i className="fa-solid fa-cart-shopping"></i>
+        <p className={`cart-num ${allProducts.length == 0 ? 'hidden' : ''}`}>{countProducts}</p>
+      </div>
+    </NavLink>
+  </navbar>
+  </div>   
   )
 }
 

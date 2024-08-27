@@ -3,9 +3,26 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Products = () => {
-
+const chile = new Intl.NumberFormat("es-CL");
   const { pizzas } = useContext(MyContext);
+  const { allProducts, setAllProducts } = useContext(MyContext);
+  const { countProducts, setCountProducts } = useContext(MyContext);
+  const { total, setTotal } = useContext(MyContext);
 
+  const onAddProduct = (pizza) => {
+    if (allProducts.find((item) => item.id == pizza.id)) {
+        const products = allProducts.map((item) =>
+            item.id === pizza.id ? { ...item, qty: item.qty + 1 } : item
+        );
+        setTotal(total + pizza.price * pizza.qty)
+        setCountProducts(countProducts + pizza.qty)
+        return setAllProducts([...products])
+    }
+    
+    setTotal(total + pizza.price * pizza.qty)
+    setCountProducts(countProducts + pizza.qty)
+    setAllProducts([...allProducts, pizza]);
+};
   
   const navigate = useNavigate();
   const handleClick = (pizza) => {
@@ -25,7 +42,9 @@ const Products = () => {
                                 pizza.name.slice(1)}
                         </h2>
                         <p>{pizza.ingredients.join(", ")}</p>
-                        
+                        <button onClick={() => onAddProduct(pizza)}>
+                            AGREGAR ${chile.format(pizza.price)}
+                        </button>
                         </div>
                          ))}
                          </div>
